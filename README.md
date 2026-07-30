@@ -16,12 +16,16 @@
   <a href="#-installation"><img src="https://img.shields.io/badge/Installation-📦-00B894?style=flat-square"></a>
   <a href="#-supported-providers"><img src="https://img.shields.io/badge/Providers-🔌-FD79A8?style=flat-square"></a>
   <a href="#-usage"><img src="https://img.shields.io/badge/Usage-🚀-0984E3?style=flat-square"></a>
-  <a href="https://www.npmjs.com/package/pi-balance"><img src="https://img.shields.io/npm/v/pi-balance?style=flat-square&color=CB3837"></a>
+  <a href="https://www.npmjs.com/package/@andy8647/pi-balance"><img src="https://img.shields.io/npm/v/@andy8647/pi-balance?style=flat-square&color=CB3837"></a>
   <a href="./README.zh-CN.md"><img src="https://img.shields.io/badge/🇨🇳_中文-FADB4A?style=flat-square"></a>
 </p>
 
 <p align="center">
-  <img src="https://img.dog/file/1779542581467_mzRI9XShNB2pFCVDlx1f8.webp" alt="pi-balance preview" width="600">
+  <img src="./assets/preview.png" alt="pi-balance preview" width="800">
+</p>
+
+<p align="center">
+  <sub>Balance segments rendered inside <a href="https://github.com/Andy8647/pi-starline">pi-starline</a> — a Starship-inspired powerline statusline for pi.<br>Top: Kimi Code 5h/7d quota · Bottom: DeepSeek balance</sub>
 </p>
 
 ---
@@ -29,6 +33,12 @@
 ## 📋 Features
 
 pi-balance is an **extension** for the [pi coding agent](https://github.com/earendil-works/pi-coding-agent) that automatically fetches and displays your AI provider's API credit balance in the pi **status bar**.
+
+> **Note**: This repository is a fork of [DragonYH/pi-balance](https://github.com/DragonYH/pi-balance) — all credit for the original extension goes to [@DragonYH](https://github.com/DragonYH). This fork is published as [`@andy8647/pi-balance`](https://www.npmjs.com/package/@andy8647/pi-balance) and adds:
+>
+> - **Kimi coding plan support** — 5-hour rate limit and 7-day quota display (via the `/usages` endpoint), plus booster wallet balance
+> - **Stable DeepSeek currency detection** for multi-currency `balance_infos`
+> - **Zero-build packaging** — ships TypeScript source directly (pi loads `.ts` extensions natively), no install-time compilation
 
 - ✅ **Auto-detects** your currently active model provider
 - ✅ **Event-driven refresh** — balance updates automatically after each conversation (with delta display ▲▼)
@@ -43,22 +53,21 @@ pi-balance is an **extension** for the [pi coding agent](https://github.com/eare
 ### Option 1: Install from npm (Recommended)
 
 ```bash
-pi install npm:pi-balance
+pi install npm:@andy8647/pi-balance
 ```
 
 ### Option 2: Install from GitHub
 
 ```bash
-pi install git:github.com/DragonYH/pi-balance
+pi install git:github.com/Andy8647/pi-balance
 ```
 
 ### Option 3: Local Development
 
 ```bash
-git clone https://github.com/DragonYH/pi-balance.git
+git clone https://github.com/Andy8647/pi-balance.git
 cd pi-balance
 npm install
-npm run build
 pi install ./
 ```
 
@@ -186,7 +195,6 @@ pi-balance/
 ├── README.md                     # English documentation
 ├── README.zh-CN.md               # Chinese documentation
 ├── package.json                  # Node.js and pi package manifest
-├── tsconfig.build.json           # Build configuration
 └── tsconfig.json                 # TypeScript configuration
 ```
 
@@ -196,12 +204,6 @@ pi-balance/
 
 ```bash
 npm run typecheck
-```
-
-### Build
-
-```bash
-npm run build
 ```
 
 ### Test
@@ -230,10 +232,10 @@ git push origin vX.Y.Z
 Before pushing the tag, configure npm Trusted Publishing for this package:
 
 - Publisher: GitHub Actions
-- Owner: `DragonYH`
+- Owner: `Andy8647`
 - Repository: `pi-balance`
-- Workflow: `release.yml`
-- Environment: leave empty unless you add one to the workflow.
+- Workflow: `publish.yml`
+- Environment: `npm-publish`
 
 ### Adding a New Provider
 
@@ -303,6 +305,8 @@ That's it — the provider auto-registers, appears in the `/balance` menu, and p
 
 <p align="center">
   <sub>Built for the <a href="https://github.com/earendil-works/pi-coding-agent">pi coding agent</a> ecosystem</sub>
+  <br>
+  <sub>Forked from <a href="https://github.com/DragonYH/pi-balance">DragonYH/pi-balance</a> · original extension by <a href="https://github.com/DragonYH">@DragonYH</a></sub>
   <br>
   <a href="./README.zh-CN.md"><img src="https://img.shields.io/badge/🇨🇳_阅读中文版本-FFD700?style=for-the-badge"></a>
 </p>

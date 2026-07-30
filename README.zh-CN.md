@@ -16,12 +16,16 @@
   <a href="#-安装"><img src="https://img.shields.io/badge/安装-📦-00B894?style=flat-square"></a>
   <a href="#-支持的提供商"><img src="https://img.shields.io/badge/支持的提供商-🔌-FD79A8?style=flat-square"></a>
   <a href="#-使用"><img src="https://img.shields.io/badge/使用-🚀-0984E3?style=flat-square"></a>
-  <a href="https://www.npmjs.com/package/pi-balance"><img src="https://img.shields.io/npm/v/pi-balance?style=flat-square&color=CB3837"></a>
+  <a href="https://www.npmjs.com/package/@andy8647/pi-balance"><img src="https://img.shields.io/npm/v/@andy8647/pi-balance?style=flat-square&color=CB3837"></a>
   <a href="./README.md"><img src="https://img.shields.io/badge/🇬🇧_English-6C5CE7?style=flat-square"></a>
 </p>
 
 <p align="center">
-  <img src="https://img.dog/file/1779542581467_mzRI9XShNB2pFCVDlx1f8.webp" alt="pi-balance 预览" width="600">
+  <img src="./assets/preview.png" alt="pi-balance 预览" width="800">
+</p>
+
+<p align="center">
+  <sub>截图中的余额段由 <a href="https://github.com/Andy8647/pi-starline">pi-starline</a> 渲染 —— Starship 风格的 pi powerline 状态栏。<br>上：Kimi Code 5h/7d 配额 · 下：DeepSeek 余额</sub>
 </p>
 
 ---
@@ -29,6 +33,12 @@
 ## 📋 功能特性
 
 pi-balance 是 [pi 编码代理](https://github.com/earendil-works/pi-coding-agent) 的一款**扩展**，能够自动获取并在 pi **状态栏**中实时显示你的 AI 提供商 API 额度余额。
+
+> **说明**：本仓库是 [DragonYH/pi-balance](https://github.com/DragonYH/pi-balance) 的 fork，原扩展的全部功劳归 [@DragonYH](https://github.com/DragonYH)。本 fork 以 [`@andy8647/pi-balance`](https://www.npmjs.com/package/@andy8647/pi-balance) 发布，并新增了：
+>
+> - **Kimi 编码套餐支持** —— 5 小时限速窗口与 7 天配额显示（通过 `/usages` 接口），以及 booster 钱包余额
+> - **DeepSeek 多币种余额的稳定识别**（`balance_infos`）
+> - **零构建打包** —— 直接发布 TypeScript 源码（pi 原生加载 `.ts` 扩展），安装时无需编译
 
 - ✅ **自动识别**当前使用的模型提供商
 - ✅ **事件驱动刷新** —— 每次对话结束后自动更新余额（并显示增减 ▲▼）
@@ -43,22 +53,21 @@ pi-balance 是 [pi 编码代理](https://github.com/earendil-works/pi-coding-age
 ### 方式一：从 npm 安装（推荐）
 
 ```bash
-pi install npm:pi-balance
+pi install npm:@andy8647/pi-balance
 ```
 
 ### 方式二：从 GitHub 安装
 
 ```bash
-pi install git:github.com/DragonYH/pi-balance
+pi install git:github.com/Andy8647/pi-balance
 ```
 
 ### 方式三：本地开发安装
 
 ```bash
-git clone https://github.com/DragonYH/pi-balance.git
+git clone https://github.com/Andy8647/pi-balance.git
 cd pi-balance
 npm install
-npm run build
 pi install ./
 ```
 
@@ -186,7 +195,6 @@ pi-balance/
 ├── README.md                     # 英文文档
 ├── README.zh-CN.md               # 中文文档
 ├── package.json                  # Node.js 与 pi 包清单
-├── tsconfig.build.json           # 构建配置
 └── tsconfig.json                 # TypeScript 配置
 ```
 
@@ -196,12 +204,6 @@ pi-balance/
 
 ```bash
 npm run typecheck
-```
-
-### 构建
-
-```bash
-npm run build
 ```
 
 ### 测试
@@ -230,10 +232,10 @@ git push origin vX.Y.Z
 推送 tag 前，请在 npm 为该包配置 Trusted Publishing：
 
 - Publisher：GitHub Actions
-- Owner：`DragonYH`
+- Owner：`Andy8647`
 - Repository：`pi-balance`
-- Workflow：`release.yml`
-- Environment：如果 workflow 没有配置 environment，则留空。
+- Workflow：`publish.yml`
+- Environment：`npm-publish`
 
 ### 添加新的提供商
 
@@ -303,6 +305,8 @@ import "./providers/yourprovider.js";
 
 <p align="center">
   <sub>为 <a href="https://github.com/earendil-works/pi-coding-agent">pi 编码代理</a> 生态构建</sub>
+  <br>
+  <sub>Fork 自 <a href="https://github.com/DragonYH/pi-balance">DragonYH/pi-balance</a> · 原扩展作者 <a href="https://github.com/DragonYH">@DragonYH</a></sub>
   <br>
   <a href="./README.md"><img src="https://img.shields.io/badge/🇬🇧_Read_in_English-6C5CE7?style=for-the-badge"></a>
 </p>

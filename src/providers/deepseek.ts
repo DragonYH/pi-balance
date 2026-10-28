@@ -38,23 +38,39 @@ export const deepseekProvider: BalanceProvider = {
 
     if (!Array.isArray(infos)) return undefined;
 
-    let total = 0;
-    let unit = "¥";
-    let matched = false;
+    // Aggregate each currency before selecting a balance; API order is unstable.
+    const amounts = new Map<string, number>();
 
     for (const item of infos) {
       const record = getRecord(item);
       const amount = toNumber(record?.total_balance);
-      if (amount === undefined) continue;
+      const currency = typeof record?.currency === "string"
+        ? record.currency.trim().toUpperCase()
+        : undefined;
+      if (amount === undefined || !currency) continue;
 
-      matched = true;
-      total += amount;
-
-      const currency = typeof record?.currency === "string" ? record.currency : undefined;
-      unit = currencyToUnit(currency) ?? currency ?? unit;
+      amounts.set(currency, (amounts.get(currency) ?? 0) + amount);
     }
 
-    return matched ? { amount: total, unit } : undefined;
+    // Prefer a funded currency (including debt) over an empty one. Currency
+    // codes break ties consistently, including when every balance is zero.
+    const balances = [...amounts]
+      .filter(([, amount]) => Number.isFinite(amount))
+      .sort(([a, amountA], [b, amountB]) => amountB - amountA || a.localeCompare(b));
+    const best = balances.find(([, amount]) => amount !== 0) ?? balances[0];
+    if (!best) return undefined;
+    const [currency, amount] = best;
+
+    // Convert only the selected USD balance, with a finite positive rate.
+    if (currency === "USD") {
+      const rate = Number(process.env.PI_BALANCE_CNY_RATE);
+      const converted = amount * rate;
+      if (Number.isFinite(rate) && rate > 0 && Number.isFinite(converted)) {
+        return { amount: converted, unit: "¥" };
+      }
+    }
+
+    return { amount, unit: currencyToUnit(currency) ?? currency };
   },
 
   getSupport(
@@ -74,7 +90,7 @@ export const deepseekProvider: BalanceProvider = {
     return {
       provider: this.definition,
       configured,
-      enabled: true, // will be determined by config
+      enabled: true,
       details: [
         hasModel ? t("support_model_found", { provider: "DeepSeek" }) : t("support_model_not_found", { provider: "DeepSeek" }),
         configured ? t("support_auth_available", { provider: "DeepSeek" }) : t("support_auth_unavailable", { provider: "DeepSeek" }),

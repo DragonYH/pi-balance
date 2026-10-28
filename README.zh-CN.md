@@ -71,7 +71,8 @@ pi install ./
 | 提供商 | 余额接口 | 显示内容 |
 |----------|-----------------|----------|
 | **DeepSeek** | `/user/balance` | 所选币种的余额（人民币或美元） |
-| **Moonshot / Kimi** | `/v1/users/me/balance` | ¥（人民币）可用余额 |
+| **Moonshot** | `/v1/users/me/balance` | ¥（人民币）可用余额 |
+| **Kimi Code** | `/v1/usages`、`/usages` | 5 小时与每周剩余额度、重置倒计时及已启用的加量钱包余额 |
 | **Sub2Api** | `/usage` | $（美元）剩余额度 |
 | **兼容 API** | `/usage`、`/v1/usage` | $（美元）剩余额度 |
 | **OpenAI Codex** | ChatGPT Codex usage API / `codex app-server` | 5 小时与每周用量剩余额度 |
@@ -128,6 +129,7 @@ DeepSeek: ¥49.87
 ### 配置说明
 
 - **DeepSeek 多币种余额** 会按币种分别汇总，显示数值最大的非零余额；数值相同时按币种代码稳定选择，零余额和负余额也会显示。将 `PI_BALANCE_CNY_RATE` 设置为有限正数的美元兑人民币汇率（例如 `7.2`），可将选中的美元余额换算成人民币显示。不同币种的金额不会直接相加。
+- **Kimi Code 额度** 按可用时间窗口显示剩余百分比，例如 `Kimi: 5h·56%↺2h30m 7d·80%↺6d`。已启用的加量钱包以人民币显示，保留两位小数。支持识别 `kimi` / `kimi-*` provider 和 `kimi.com` 接口，与 Moonshot 共用 `moonshot` 显示开关。额度接口不可用时，会尝试标准 Moonshot 余额接口。
 - **Provider 显示开关** 会由 `/balance` 菜单保存，并在下一次刷新时生效。
 - **自定义 Sub2Api provider** 会从 pi 模型配置中自动探测，并可在主菜单或 `/balance sub2api` 中逐个开启或关闭。修改模型配置后，可使用 `/balance sub2api rescan` 重新扫描。
 - **OpenAI Codex 用量** 仅在当前模型 provider 为 `openai-codex` 时显示。扩展会优先复用 pi 的 Codex 订阅认证 headers，并可在可用时回退到 `codex app-server --listen stdio://`；CLI 回退可在 `/balance` 菜单中开关。
@@ -190,7 +192,9 @@ pi-balance/
 │       ├── zh-CN.ts              # 中文翻译
 │       └── en.ts                 # 英文翻译
 ├── tests/
+│   ├── deepseek.test.ts          # 币种选择与汇率换算回归测试
 │   ├── index.test.ts
+│   ├── moonshot.test.ts          # Kimi 额度解析、识别与接口回退测试
 │   └── refresh.test.ts           # 刷新时机、请求合并与生命周期回归测试
 ├── LICENSE                       # MIT 许可证
 ├── README.md                     # 英文文档

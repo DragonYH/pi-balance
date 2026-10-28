@@ -71,7 +71,8 @@ Restart pi. You should see the balance indicator appear in the status bar once y
 | Provider | Balance Endpoint | Display |
 |----------|--------------------------|---------|
 | **DeepSeek** | `/user/balance` | Balance in the selected currency (CNY or USD) |
-| **Moonshot / Kimi** | `/v1/users/me/balance` | ¥ (CNY) available balance |
+| **Moonshot** | `/v1/users/me/balance` | ¥ (CNY) available balance |
+| **Kimi Code** | `/v1/usages`, `/usages` | 5-hour and weekly quota remaining, reset countdowns, and enabled booster balance |
 | **Sub2Api** | `/usage` | $ (USD) remaining balance |
 | **Compatible APIs** | `/usage`, `/v1/usage` | $ (USD) remaining balance |
 | **OpenAI Codex** | ChatGPT Codex usage API / `codex app-server` | 5-hour and weekly usage remaining |
@@ -128,6 +129,7 @@ You can also use command arguments directly:
 ### Configuration Notes
 
 - **DeepSeek currencies** are grouped separately. The largest nonzero per-currency balance is shown, with a stable currency-code tie break; zero and negative balances stay visible. Set `PI_BALANCE_CNY_RATE` to a finite positive USD-to-CNY rate (for example, `7.2`) to display a selected USD balance in CNY. Different currencies are never added together.
+- **Kimi Code quota** shows the remaining percentage for each available window, for example `Kimi: 5h·56%↺2h30m 7d·80%↺6d`. An enabled booster wallet is shown in CNY with two decimal places. Both `kimi` / `kimi-*` providers and `kimi.com` endpoints are detected; Kimi shares the `moonshot` display toggle. If usage endpoints are unavailable, the standard Moonshot balance endpoint is tried.
 - **Provider display toggles** are saved by the `/balance` menu and apply on the next refresh.
 - **Custom Sub2Api providers** are discovered from your pi model configuration (`~/.pi/agent/models.json`) and can be enabled/disabled individually from the main menu or `/balance sub2api`. Use `/balance sub2api rescan` after changing model configuration.
 - **OpenAI Codex usage** is shown only while the active model provider is `openai-codex`. The extension first reuses pi's Codex subscription auth headers and can fall back to `codex app-server --listen stdio://` when available; the CLI fallback can be toggled in the `/balance` menu.
@@ -190,7 +192,9 @@ pi-balance/
 │       ├── zh-CN.ts              # Chinese translations
 │       └── en.ts                 # English translations
 ├── tests/
+│   ├── deepseek.test.ts          # Currency selection and conversion regressions
 │   ├── index.test.ts
+│   ├── moonshot.test.ts          # Kimi quota parsing, detection, and request fallback
 │   └── refresh.test.ts           # Refresh timing, coalescing, and lifecycle regressions
 ├── LICENSE                       # MIT license
 ├── README.md                     # English documentation

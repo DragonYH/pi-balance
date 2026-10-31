@@ -50,15 +50,15 @@
     "image": "https://img.dog/file/1779542581467_mzRI9XShNB2pFCVDlx1f8.webp"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.19.0"
   },
   "peerDependencies": {
     "@earendil-works/pi-ai": "*",
     "@earendil-works/pi-coding-agent": "*"
   },
   "devDependencies": {
-    "@earendil-works/pi-ai": "^0.75.5",
-    "@earendil-works/pi-coding-agent": "^0.75.5",
+    "@earendil-works/pi-ai": "^1.4.0",
+    "@earendil-works/pi-coding-agent": "^1.4.0",
     "@types/node": "^24.12.4",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
